@@ -1,0 +1,32 @@
+name: Test cask
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: macos-15
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Style
+        run: brew style snapset/tap
+
+      - name: Audit
+        run: brew audit --cask --online --strict snapset/tap/snapset
+
+      - name: Install
+        run: brew install --cask snapset/tap/snapset
+
+      - name: Check the installed app
+        run: .github/scripts/check-app.sh
+
+      - name: Uninstall
+        run: brew uninstall --cask --zap snapset

@@ -1,0 +1,43 @@
+name: Follow new releases
+
+# Snapset updates itself (Sparkle), so this only keeps fresh installs current.
+on:
+  schedule:
+    - cron: "23 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency: bump
+
+jobs:
+  bump:
+    runs-on: macos-15
+    steps:
+      - name: Set up Homebrew
+        uses: Homebrew/actions/setup-homebrew@main
+
+      - name: Look for a newer release
+        id: bump
+        run: python3 .github/scripts/bump.py
+
+      - name: Test the new version before publishing it
+        if: steps.bump.outputs.changed == 'true'
+        run: |
+          brew style snapset/tap
+          brew audit --cask --online --strict snapset/tap/snapset
+          brew install --cask snapset/tap/snapset
+          .github/scripts/check-app.sh
+          brew uninstall --cask --zap snapset
+
+      - name: Publish
+        if: steps.bump.outputs.changed == 'true'
+        env:
+          VERSION: ${{ steps.bump.outputs.version }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "snapset ${VERSION}"
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}" HEAD:main

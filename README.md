@@ -12,6 +12,14 @@ trial; see [snapset.co](https://snapset.co/) for plans.
 
 Snapset updates itself, so `brew upgrade` leaves it alone unless you pass `--greedy`.
 
+The cask also links the `snapset` command, for scripts and launchers:
+
+```sh
+snapset list --json      # saved layouts
+snapset apply "Work"     # apply a layout
+snapset save "Work"      # save the current arrangement as a new layout
+```
+
 To remove it, along with its saved layouts and settings:
 
 ```sh

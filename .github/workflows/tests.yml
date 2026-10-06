@@ -28,5 +28,10 @@ jobs:
       - name: Check the installed app
         run: .github/scripts/check-app.sh
 
+      - name: Check the snapset command
+        run: |
+          snapset help
+          snapset list --json | python3 -c 'import json, sys; json.load(sys.stdin)["layouts"]'
+
       - name: Uninstall
         run: brew uninstall --cask --zap snapset

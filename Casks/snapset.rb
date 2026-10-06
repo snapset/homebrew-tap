@@ -1,6 +1,6 @@
 cask "snapset" do
-  version "1.0.0"
-  sha256 "98bf681d807125131048028923696708a4d444f075eaf7e087e5d52c7a369e5b"
+  version "1.2.0"
+  sha256 "349b1e24c0288d1881eb0795764e92c06984f294710e3f5afec4b74ef8c0f40a"
 
   url "https://snapset.co/download/Snapset-#{version}.dmg"
   name "Snapset"
@@ -17,6 +17,7 @@ cask "snapset" do
   depends_on macos: :sonoma
 
   app "Snapset.app"
+  binary "#{appdir}/Snapset.app/Contents/MacOS/Snapset", target: "snapset"
 
   uninstall quit: "com.snapset.Snapset"
 

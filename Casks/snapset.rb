@@ -1,6 +1,6 @@
 cask "snapset" do
-  version "1.6.2"
-  sha256 "b914eaa7180db21836b256d67d00687136a01f8486f22a6c44abffbb5688a012"
+  version "1.6.3"
+  sha256 "ca029ca3b2432b8bf452c409d2dfdaac0d73c42973c61929a64a15b0592a60a0"
 
   url "https://snapset.co/download/Snapset-#{version}.dmg"
   name "Snapset"
